@@ -1,0 +1,1272 @@
+</body>
+</html><!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🎓 Mon Quiz d'Anglais</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Comic Sans MS', cursive, Arial, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 10px;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 600px;
+            background: rgba(255, 255, 255, 0.95);
+            padding: 30px;
+            border-radius: 25px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+            backdrop-filter: blur(10px);
+            animation: slideIn 0.5s ease-out;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        h1 {
+            text-align: center;
+            color: #4a5568;
+            font-size: 2.5rem;
+            margin-bottom: 30px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .emoji {
+            font-size: 2rem;
+            margin: 0 10px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: #2d3748;
+            margin-bottom: 8px;
+        }
+
+        select {
+            width: 100%;
+            padding: 15px;
+            font-size: 1.1rem;
+            border: 3px solid #e2e8f0;
+            border-radius: 15px;
+            background: white;
+            color: #2d3748;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        select:focus {
+            outline: none;
+            border-color: #667eea;
+            transform: scale(1.02);
+        }
+
+        .start-btn {
+            width: 100%;
+            padding: 18px;
+            font-size: 1.3rem;
+            font-weight: bold;
+            background: linear-gradient(45deg, #ff6b6b, #ffa726);
+            color: white;
+            border: none;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            box-shadow: 0 5px 15px rgba(255, 107, 107, 0.4);
+        }
+
+        .start-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(255, 107, 107, 0.6);
+        }
+
+        .start-btn:active {
+            transform: translateY(0);
+        }
+
+        #quizContainer {
+            text-align: center;
+        }
+
+        #question {
+            font-size: 1.8rem;
+            color: #2d3748;
+            margin-bottom: 30px;
+            padding: 20px;
+            background: linear-gradient(135deg, #ffd89b 0%, #19547b 100%);
+            background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-weight: bold;
+            min-height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        #options {
+            display: grid;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        #options button {
+            padding: 18px;
+            font-size: 1.2rem;
+            border: 3px solid #e2e8f0;
+            border-radius: 15px;
+            background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
+            color: #2d3748;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 600;
+            position: relative;
+            overflow: hidden;
+        }
+
+        #options button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+            border-color: #667eea;
+        }
+
+        #options button:active {
+            transform: translateY(0);
+        }
+
+        #options button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+            transition: left 0.5s;
+        }
+
+        #options button:hover::before {
+            left: 100%;
+        }
+
+        #answerInput {
+            width: 100%;
+            padding: 18px;
+            font-size: 1.2rem;
+            border: 3px solid #e2e8f0;
+            border-radius: 15px;
+            margin-bottom: 15px;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        #answerInput:focus {
+            outline: none;
+            border-color: #667eea;
+            transform: scale(1.02);
+            box-shadow: 0 0 20px rgba(102, 126, 234, 0.3);
+        }
+
+        #validateBtn {
+            width: 100%;
+            padding: 15px;
+            font-size: 1.2rem;
+            background: linear-gradient(45deg, #4facfe, #00f2fe);
+            color: white;
+            border: none;
+            border-radius: 15px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: bold;
+        }
+
+        #validateBtn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(79, 172, 254, 0.4);
+        }
+
+        #scoreContainer {
+            text-align: center;
+            animation: celebrationBounce 0.6s ease-out;
+        }
+
+        @keyframes celebrationBounce {
+            0%, 20%, 50%, 80%, 100% {
+                transform: translateY(0);
+            }
+            40% {
+                transform: translateY(-10px);
+            }
+            60% {
+                transform: translateY(-5px);
+            }
+        }
+
+        #score {
+            font-size: 2rem;
+            color: #2d3748;
+            margin: 20px 0;
+            padding: 20px;
+            background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);
+            border-radius: 20px;
+            font-weight: bold;
+        }
+
+        h2, h3 {
+            color: #2d3748;
+            margin: 20px 0;
+        }
+
+        #lastScores {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 10px;
+            list-style: none;
+            margin: 20px 0;
+        }
+
+        #lastScores li {
+            background: linear-gradient(135deg, #84fab0 0%, #8fd3f4 100%);
+            color: #2d3748;
+            padding: 10px 15px;
+            border-radius: 20px;
+            font-weight: bold;
+            font-size: 1.1rem;
+            min-width: 50px;
+            text-align: center;
+        }
+
+        #restartBtn {
+            width: 100%;
+            padding: 15px;
+            font-size: 1.2rem;
+            background: linear-gradient(45deg, #a8edea, #fed6e3);
+            color: #2d3748;
+            border: 3px solid #e2e8f0;
+            border-radius: 15px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: bold;
+        }
+
+        #restartBtn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+            border-color: #667eea;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .progress-container {
+            width: 100%;
+            background: #e2e8f0;
+            border-radius: 10px;
+            margin: 20px 0;
+            overflow: hidden;
+        }
+
+        .progress-bar {
+            height: 10px;
+            background: linear-gradient(45deg, #ff6b6b, #ffa726);
+            width: 0%;
+            transition: width 0.3s ease;
+            border-radius: 10px;
+        }
+
+        .correct-animation {
+            animation: correctPulse 0.6s ease-out;
+        }
+
+        @keyframes correctPulse {
+            0% {
+                background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
+                transform: scale(1);
+            }
+            50% {
+                background: linear-gradient(135deg, #84fab0 0%, #8fd3f4 100%);
+                transform: scale(1.05);
+            }
+            100% {
+                background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
+                transform: scale(1);
+            }
+        }
+
+        .manage-btn {
+            width: 100%;
+            padding: 12px;
+            font-size: 1rem;
+            background: linear-gradient(45deg, #a8edea, #fed6e3);
+            color: #2d3748;
+            border: 2px solid #e2e8f0;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 600;
+            margin-top: 10px;
+        }
+
+        .manage-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15);
+            border-color: #667eea;
+        }
+
+        #listManagerContainer {
+            animation: slideIn 0.5s ease-out;
+        }
+
+        .tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .tab-btn {
+            flex: 1;
+            padding: 12px;
+            font-size: 1rem;
+            background: #e2e8f0;
+            color: #4a5568;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 600;
+        }
+
+        .tab-btn.active {
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            color: white;
+            transform: scale(1.05);
+        }
+
+        .tab-btn:hover:not(.active) {
+            background: #cbd5e0;
+        }
+
+        .tab-panel {
+            animation: fadeIn 0.3s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .word-pair {
+            display: grid;
+            grid-template-columns: 1fr 1fr auto;
+            gap: 10px;
+            margin-bottom: 10px;
+            align-items: center;
+        }
+
+        .fr-input, .en-input {
+            padding: 12px;
+            font-size: 1rem;
+            border: 2px solid #e2e8f0;
+            border-radius: 10px;
+            transition: all 0.3s ease;
+        }
+
+        .fr-input:focus, .en-input:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 10px rgba(102, 126, 234, 0.3);
+        }
+
+        .remove-word-btn {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(45deg, #ff6b6b, #ffa726);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 0.8rem;
+            transition: all 0.3s ease;
+        }
+
+        .remove-word-btn:hover {
+            transform: scale(1.1);
+            box-shadow: 0 5px 15px rgba(255, 107, 107, 0.4);
+        }
+
+        .add-word-btn {
+            width: 100%;
+            padding: 12px;
+            background: linear-gradient(45deg, #84fab0, #8fd3f4);
+            color: #2d3748;
+            border: 2px solid #e2e8f0;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            margin-top: 10px;
+        }
+
+        .add-word-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15);
+        }
+
+        .button-group {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        .button-group.three-cols {
+            grid-template-columns: 1fr 1fr 1fr;
+        }
+
+        .save-btn {
+            padding: 15px;
+            background: linear-gradient(45deg, #4facfe, #00f2fe);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+
+        .save-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(79, 172, 254, 0.4);
+        }
+
+        .delete-btn {
+            padding: 15px;
+            background: linear-gradient(45deg, #ff6b6b, #ffa726);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+
+        .delete-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(255, 107, 107, 0.4);
+        }
+
+        .cancel-btn {
+            padding: 15px;
+            background: linear-gradient(45deg, #a8edea, #fed6e3);
+            color: #2d3748;
+            border: 2px solid #e2e8f0;
+            border-radius: 12px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+
+        .cancel-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15);
+            border-color: #667eea;
+        }
+
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 15px 20px;
+            border-radius: 10px;
+            font-weight: bold;
+            z-index: 1000;
+            animation: slideInRight 0.3s ease-out;
+        }
+
+        .notification.success {
+            background: linear-gradient(45deg, #84fab0, #8fd3f4);
+            color: #2d3748;
+        }
+
+        .notification.error {
+            background: linear-gradient(45deg, #ff6b6b, #ffa726);
+            color: white;
+        }
+
+        @keyframes slideInRight {
+            from {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+            .container {
+                margin: 10px;
+                padding: 20px;
+            }
+            
+            h1 {
+                font-size: 2rem;
+            }
+            
+            #question {
+                font-size: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1><span class="emoji">🎓</span>Mon Quiz d'Anglais<span class="emoji">🇬🇧</span></h1>
+
+        <div id="setupContainer">
+            <div class="form-group">
+                <label for="listSelect">📚 Choisir une liste :</label>
+                <select id="listSelect"></select>
+                <button id="manageListsBtn" class="manage-btn">📝 Gérer mes listes</button>
+            </div>
+
+            <div class="form-group">
+                <label for="modeSelect">🎮 Choisir le mode :</label>
+                <select id="modeSelect">
+                    <option value="qcm">🔤 QCM (4 choix)</option>
+                    <option value="ecriture">✏️ Écriture</option>
+                </select>
+            </div>
+
+            <button id="startBtn" class="start-btn">🚀 Commencer l'aventure !</button>
+        </div>
+
+        <div id="listManagerContainer" class="hidden">
+            <h2>📝 Gestionnaire de listes</h2>
+            
+            <div class="tabs">
+                <button id="addListTab" class="tab-btn active">➕ Ajouter une liste</button>
+                <button id="editListTab" class="tab-btn">✏️ Modifier/Supprimer</button>
+            </div>
+
+            <div id="addListPanel" class="tab-panel">
+                <div class="form-group">
+                    <label for="newListName">🏷️ Nom de la nouvelle liste :</label>
+                    <input type="text" id="newListName" placeholder="Ex: Liste 2, Verbes irréguliers...">
+                </div>
+
+                <div class="form-group">
+                    <label>📝 Mots de vocabulaire :</label>
+                    <div id="wordInputs">
+                        <div class="word-pair">
+                            <input type="text" placeholder="Mot en français" class="fr-input">
+                            <input type="text" placeholder="Traduction en anglais" class="en-input">
+                            <button type="button" class="remove-word-btn">❌</button>
+                        </div>
+                    </div>
+                    <button id="addWordBtn" class="add-word-btn">➕ Ajouter un mot</button>
+                </div>
+
+                <div class="button-group">
+                    <button id="saveListBtn" class="save-btn">💾 Sauvegarder la liste</button>
+                    <button id="cancelAddBtn" class="cancel-btn">❌ Annuler</button>
+                </div>
+            </div>
+
+            <div id="editListPanel" class="tab-panel hidden">
+                <div class="form-group">
+                    <label for="editListSelect">📚 Choisir une liste à modifier :</label>
+                    <select id="editListSelect"></select>
+                </div>
+
+                <div id="editWordInputs" class="form-group">
+                    <!-- Les mots seront chargés ici -->
+                </div>
+
+                <div class="button-group">
+                    <button id="updateListBtn" class="save-btn">✅ Mettre à jour</button>
+                    <button id="deleteListBtn" class="delete-btn">🗑️ Supprimer la liste</button>
+                    <button id="cancelEditBtn" class="cancel-btn">❌ Annuler</button>
+                </div>
+            </div>
+        </div>
+
+        <div id="quizContainer" class="hidden">
+            <div class="progress-container">
+                <div id="progressBar" class="progress-bar"></div>
+            </div>
+            <p id="questionNumber"></p>
+            <p id="question"></p>
+            <div id="options"></div>
+            <input type="text" id="answerInput" class="hidden" placeholder="✏️ Écris ta réponse ici...">
+            <button id="validateBtn">✅ Valider</button>
+        </div>
+
+        <div id="scoreContainer" class="hidden">
+            <h2>🎉 Résultat</h2>
+            <p id="score"></p>
+            <h3>📊 Tes 6 derniers scores :</h3>
+            <ul id="lastScores"></ul>
+            <button id="restartBtn">🔄 Recommencer</button>
+        </div>
+    </div>
+
+    <script>
+        // =========================
+        // Listes de vocabulaire
+        // =========================
+        const defaultListes = {
+
+    "Liste 1": [
+	{ en: "To wake up", fr: "Se réveiller" },
+	{ en: "To get up", fr: "Se lever (de son lit)" },
+	{ en: "To go to the bathroom", fr: "Aller dans la salle de bain" },
+	{ en: "To brush one's teeth / I brush my teeth", fr: "Brosser ses dents / je brosse mes dents" },
+	{ en: "To have a shower", fr: "Prendre une douche" },
+	{ en: "To have a bath", fr: "Prendre un bain" },
+	{ en: "To get dressed", fr: "S'habiller" },
+	{ en: "To have breakfast", fr: "Prendre son petit déjeuner" },
+	{ en: "To have lunch", fr: "Dîner" },
+	{ en: "To have dinner", fr: "Souper" },
+	{ en: "A snack", fr: "Un encas" },
+	{ en: "A meal", fr: "Un repas" },
+	{ en: "To leave home", fr: "Quitter la maison" },
+	{ en: "To go to school", fr: "Aller à l'école" },
+	{ en: "To wait for the bus", fr: "Attendre le bus" },
+	{ en: "To take the bus", fr: "Prendre le bus" },
+	{ en: "To arrive at school", fr: "Arriver à l'école" },
+	{ en: "To leave school", fr: "Quitter l'école" },
+	{ en: "By car", fr: "En voiture" },
+	{ en: "By bus", fr: "En bus" },
+	{ en: "By boat", fr: "En bateau" },
+    ],
+
+    "Liste 2": [
+	{ en: "By coach", fr: "En car" },
+	{ en: "By tube / underground / subway", fr: "En métro" },
+	{ en: "By plane", fr: "En avion" },
+	{ en: "ON FOOT", fr: "À pied" },
+	{ en: "To study", fr: "Étudier" },
+	{ en: "To have a break", fr: "Prendre une pause" },
+	{ en: "In the morning", fr: "Le matin" },
+	{ en: "In the afternoon", fr: "L'après-midi" },
+	{ en: "In the evening", fr: "Le soir" },
+	{ en: "At night", fr: "La nuit" },
+	{ en: "To go home", fr: "Aller à la maison" },
+	{ en: "To meet friends", fr: "Rencontrer des amis" },
+	{ en: "To go on the internet", fr: "Aller sur internet" },
+	{ en: "To drink", fr: "Boire" },
+	{ en: "To eat", fr: "Manger" },
+	{ en: "To like", fr: "Aimer" },
+	{ en: "To love", fr: "Aimer, adorer" },
+	{ en: "To hate", fr: "Dénester" },
+	{ en: "To read a book", fr: "Lire un livre" },
+	{ en: "To play PS3", fr: "Jouer à la PS3" },
+	{ en: "To listen to music", fr: "Écouter de la musique" },
+	{ en: "To go to the cinema", fr: "Aller au cinema" },
+	{ en: "To write", fr: "Écrire" },
+    ],
+
+    "Liste 3": [
+	{ en: "To work", fr: "Travailler" },
+	{ en: "To watch tv", fr: "Regarder la tv" },
+	{ en: "To look at", fr: "Regarder" },
+	{ en: "To hear", fr: "Entendre" },
+	{ en: "To sing", fr: "Chanter" },
+	{ en: "To give", fr: "Donner" },
+	{ en: "To open", fr: "Ouvrir" },
+	{ en: "To close", fr: "Fermer" },
+	{ en: "To smile", fr: "Sourire" },
+	{ en: "To laugh", fr: "Rire" },
+	{ en: "To show", fr: "Montrer" },
+	{ en: "To stay at home", fr: "Rester à la maison" },
+	{ en: "To scream", fr: "Crier" },
+	{ en: "To phone/ to call a friend", fr: "Téléphoner à un ami, appeler un ami" },
+	{ en: "To play football", fr: "Jouer au football" },
+	{ en: "To play tennis", fr: "Jouer au tennis" },
+	{ en: "To play the piano", fr: "Jouer du piano" },
+	{ en: "To play the drums", fr: "Jouer de la batterie" },
+	{ en: "To play the guitar", fr: "Jouer de la guitare" },
+	{ en: "To play cards", fr: "Jouer aux cartes" },
+	{ en: "To smoke", fr: "Fumer" },
+	{ en: "To cry", fr: "Pleurer" },
+	{ en: "To draw", fr: "Dessiner" },
+    ],
+
+    "Liste 4": [
+        { fr: "Courir", en: "To run" },
+        { fr: "Marcher, se promener", en: "To walk" },
+        { fr: "Faire", en: "To do" },
+        { fr: "Faire (fabriquer)", en: "To make" },
+        { fr: "Revenir à la maison, rentrer chez soi", en: "To come back home" },
+        { fr: "S'asseoir", en: "To sit down" },
+        { fr: "Se lever (de sa chaise)", en: "To stand up" },
+        { fr: "Parler, bavarder", en: "To talk" },
+        { fr: "Parler une langue étrangère", en: "To speak" },
+        { fr: "Dormir", en: "To sleep" },
+        { fr: "Être", en: "To be" },
+        { fr: "Avoir", en: "To have" },
+        { fr: "Avoir, posséder", en: "To have got" },
+        { fr: "Aller", en: "To go to" },
+        { fr: "Nager", en: "To swim" },
+        { fr: "Rouler à vélo", en: "To ride a bike" },
+        { fr: "Monter à cheval, faire de l'équitation", en: "To ride a horse" },
+        { fr: "Habiter", en: "To live" },
+        { fr: "À quelle fréquence vas-tu à l'école?", en: "How often do you go to school" },
+        { fr: "Je vais au cinéma 1 fois par an", en: "I go to the cinema once a year" },
+        { fr: "Je vais à la piscine 2 fois par semaine", en: "I go to the pool twice a week" },
+        { fr: "Je vais au restaurant 3 fois par mois", en: "I go to the restaurant 3 times a month" },
+        { fr: "Tous les jours", en: "Every day" }
+    ],
+
+    "Liste 5": [
+	{ en: "Usually", fr: "Habituellement" },
+	{ en: "Often", fr: "Souvent" },
+	{ en: "Rarely", fr: "Rarement" },
+	{ en: "Never", fr: "Jamais" },
+	{ en: "Hardly ever", fr: "Presque jamais" },
+	{ en: "Sometimes", fr: "Parfois" },
+	{ en: "Always", fr: "Toujours" },
+	{ en: "Once a week", fr: "Une fois par semaine" },
+	{ en: "Twice a week / a year", fr: "Deux fois par semaine / par an" },
+	{ en: "Three times a week / a day", fr: "Trois fois par semaine / par jour" },
+	{ en: "Four times a week / a month", fr: "Quatre fois par semaine / par mois" },
+	{ en: "I like reading", fr: "J'aime lire" },
+	{ en: "I like swimming", fr: "J'aime nager" },
+	{ en: "I like riding a bike", fr: "J'aime rouler en vélo / moto" },
+	{ en: "I like dancing", fr: "J'aime danser" },
+	{ en: "I like eating candies", fr: "J'aime manger des sucreries" },
+	{ en: "I like playing football", fr: "J'aime jouer au football" },
+	{ en: "I like playing tennis", fr: "J'aime jouer au tennis" },
+	{ en: "I like reading in the evening", fr: "J'aime lire le soir" },
+    ]
+};
+
+
+        // Charger les listes depuis la mémoire ou utiliser les listes par défaut
+        let listes = {};
+        try {
+            const savedListes = sessionStorage.getItem("englishLists");
+            listes = savedListes ? JSON.parse(savedListes) : {...defaultListes};
+        } catch (e) {
+            listes = {...defaultListes};
+        }
+
+        // =========================
+        // Variables globales
+        // =========================
+        let currentList = [];
+        let currentIndex = 0;
+        let score = 0;
+        let mode = "qcm";
+        let lastScores = [];
+
+        // Récupérer les scores depuis les données en mémoire
+        try {
+            lastScores = JSON.parse(sessionStorage.getItem("englishScores")) || [];
+        } catch (e) {
+            lastScores = [];
+        }
+
+        // =========================
+        // Récupérer les éléments
+        // =========================
+        const listSelect = document.getElementById("listSelect");
+        const modeSelect = document.getElementById("modeSelect");
+        const startBtn = document.getElementById("startBtn");
+        const manageListsBtn = document.getElementById("manageListsBtn");
+        const setupContainer = document.getElementById("setupContainer");
+        const listManagerContainer = document.getElementById("listManagerContainer");
+        const quizContainer = document.getElementById("quizContainer");
+        const questionEl = document.getElementById("question");
+        const questionNumberEl = document.getElementById("questionNumber");
+        const optionsEl = document.getElementById("options");
+        const answerInput = document.getElementById("answerInput");
+        const validateBtn = document.getElementById("validateBtn");
+        const scoreContainer = document.getElementById("scoreContainer");
+        const scoreEl = document.getElementById("score");
+        const lastScoresEl = document.getElementById("lastScores");
+        const restartBtn = document.getElementById("restartBtn");
+        const progressBar = document.getElementById("progressBar");
+
+        // Éléments du gestionnaire de listes
+        const addListTab = document.getElementById("addListTab");
+        const editListTab = document.getElementById("editListTab");
+        const addListPanel = document.getElementById("addListPanel");
+        const editListPanel = document.getElementById("editListPanel");
+        const newListName = document.getElementById("newListName");
+        const wordInputs = document.getElementById("wordInputs");
+        const addWordBtn = document.getElementById("addWordBtn");
+        const saveListBtn = document.getElementById("saveListBtn");
+        const cancelAddBtn = document.getElementById("cancelAddBtn");
+        const editListSelect = document.getElementById("editListSelect");
+        const editWordInputs = document.getElementById("editWordInputs");
+        const updateListBtn = document.getElementById("updateListBtn");
+        const deleteListBtn = document.getElementById("deleteListBtn");
+        const cancelEditBtn = document.getElementById("cancelEditBtn");
+
+        // =========================
+        // Initialisation des listes
+        // =========================
+        function initLists() {
+            listSelect.innerHTML = "";
+            editListSelect.innerHTML = "";
+            
+            for (let listName in listes) {
+                // Sélecteur principal
+                let opt = document.createElement("option");
+                opt.value = listName;
+                opt.textContent = listName;
+                listSelect.appendChild(opt);
+
+                // Sélecteur d'édition
+                let editOpt = document.createElement("option");
+                editOpt.value = listName;
+                editOpt.textContent = listName;
+                editListSelect.appendChild(editOpt);
+            }
+        }
+        initLists();
+
+        // =========================
+        // Sauvegarde des listes
+        // =========================
+        function saveLists() {
+            try {
+                sessionStorage.setItem("englishLists", JSON.stringify(listes));
+            } catch (e) {
+                showNotification("Erreur lors de la sauvegarde", "error");
+            }
+        }
+
+        // =========================
+        // Notification
+        // =========================
+        function showNotification(message, type = "success") {
+            const notification = document.createElement("div");
+            notification.className = `notification ${type}`;
+            notification.textContent = message;
+            document.body.appendChild(notification);
+
+            setTimeout(() => {
+                notification.remove();
+            }, 3000);
+        }
+
+        // =========================
+        // Gestionnaire de listes
+        // =========================
+        manageListsBtn.addEventListener("click", () => {
+            setupContainer.classList.add("hidden");
+            listManagerContainer.classList.remove("hidden");
+        });
+
+        // Gestion des onglets
+        addListTab.addEventListener("click", () => {
+            addListTab.classList.add("active");
+            editListTab.classList.remove("active");
+            addListPanel.classList.remove("hidden");
+            editListPanel.classList.add("hidden");
+        });
+
+        editListTab.addEventListener("click", () => {
+            editListTab.classList.add("active");
+            addListTab.classList.remove("active");
+            editListPanel.classList.remove("hidden");
+            addListPanel.classList.add("hidden");
+        });
+
+        // =========================
+        // Ajouter une nouvelle liste
+        // =========================
+        addWordBtn.addEventListener("click", () => {
+            addWordPair();
+        });
+
+        function addWordPair(frWord = "", enWord = "") {
+            const wordPair = document.createElement("div");
+            wordPair.className = "word-pair";
+            wordPair.innerHTML = `
+                <input type="text" placeholder="Mot en français" class="fr-input" value="${frWord}">
+                <input type="text" placeholder="Traduction en anglais" class="en-input" value="${enWord}">
+                <button type="button" class="remove-word-btn">❌</button>
+            `;
+            
+            wordPair.querySelector(".remove-word-btn").addEventListener("click", () => {
+                if (wordInputs.children.length > 1) {
+                    wordPair.remove();
+                }
+            });
+
+            wordInputs.appendChild(wordPair);
+        }
+
+        // Ajouter des lignes par défaut
+        for (let i = 0; i < 4; i++) {
+            addWordPair();
+        }
+
+        saveListBtn.addEventListener("click", () => {
+            const listName = newListName.value.trim();
+            if (!listName) {
+                showNotification("Veuillez entrer un nom de liste", "error");
+                return;
+            }
+
+            if (listes[listName]) {
+                showNotification("Une liste avec ce nom existe déjà", "error");
+                return;
+            }
+
+            const words = [];
+            const wordPairs = wordInputs.querySelectorAll(".word-pair");
+            
+            wordPairs.forEach(pair => {
+                const frInput = pair.querySelector(".fr-input").value.trim();
+                const enInput = pair.querySelector(".en-input").value.trim();
+                if (frInput && enInput) {
+                    words.push({ fr: frInput, en: enInput });
+                }
+            });
+
+            if (words.length === 0) {
+                showNotification("Veuillez ajouter au moins un mot", "error");
+                return;
+            }
+
+            listes[listName] = words;
+            saveLists();
+            initLists();
+            
+            // Réinitialiser le formulaire
+            newListName.value = "";
+            wordInputs.innerHTML = "";
+            for (let i = 0; i < 4; i++) {
+                addWordPair();
+            }
+            
+            showNotification(`Liste "${listName}" créée avec succès !`, "success");
+        });
+
+        // =========================
+        // Modifier/Supprimer une liste
+        // =========================
+        editListSelect.addEventListener("change", () => {
+            loadListForEditing();
+        });
+
+        function loadListForEditing() {
+            const selectedListName = editListSelect.value;
+            const selectedList = listes[selectedListName];
+            
+            if (!selectedList) return;
+
+            editWordInputs.innerHTML = '<label>📝 Mots de vocabulaire :</label>';
+            
+            const container = document.createElement("div");
+            container.id = "editWordContainer";
+            
+            selectedList.forEach((word, index) => {
+                const wordPair = document.createElement("div");
+                wordPair.className = "word-pair";
+                wordPair.innerHTML = `
+                    <input type="text" placeholder="Mot en français" class="fr-input" value="${word.fr}">
+                    <input type="text" placeholder="Traduction en anglais" class="en-input" value="${word.en}">
+                    <button type="button" class="remove-word-btn">❌</button>
+                `;
+                
+                wordPair.querySelector(".remove-word-btn").addEventListener("click", () => {
+                    wordPair.remove();
+                });
+
+                container.appendChild(wordPair);
+            });
+            
+            const addWordBtnEdit = document.createElement("button");
+            addWordBtnEdit.className = "add-word-btn";
+            addWordBtnEdit.textContent = "➕ Ajouter un mot";
+            addWordBtnEdit.addEventListener("click", () => {
+                const wordPair = document.createElement("div");
+                wordPair.className = "word-pair";
+                wordPair.innerHTML = `
+                    <input type="text" placeholder="Mot en français" class="fr-input">
+                    <input type="text" placeholder="Traduction en anglais" class="en-input">
+                    <button type="button" class="remove-word-btn">❌</button>
+                `;
+                
+                wordPair.querySelector(".remove-word-btn").addEventListener("click", () => {
+                    wordPair.remove();
+                });
+
+                container.insertBefore(wordPair, addWordBtnEdit);
+            });
+            
+            container.appendChild(addWordBtnEdit);
+            editWordInputs.appendChild(container);
+        }
+
+        updateListBtn.addEventListener("click", () => {
+            const listName = editListSelect.value;
+            if (!listName) return;
+
+            const words = [];
+            const wordPairs = editWordInputs.querySelectorAll(".word-pair");
+            
+            wordPairs.forEach(pair => {
+                const frInput = pair.querySelector(".fr-input").value.trim();
+                const enInput = pair.querySelector(".en-input").value.trim();
+                if (frInput && enInput) {
+                    words.push({ fr: frInput, en: enInput });
+                }
+            });
+
+            if (words.length === 0) {
+                showNotification("Veuillez garder au moins un mot", "error");
+                return;
+            }
+
+            listes[listName] = words;
+            saveLists();
+            initLists();
+            showNotification(`Liste "${listName}" mise à jour !`, "success");
+        });
+
+        deleteListBtn.addEventListener("click", () => {
+            const listName = editListSelect.value;
+            if (!listName) return;
+
+            if (confirm(`Êtes-vous sûr de vouloir supprimer la liste "${listName}" ?`)) {
+                delete listes[listName];
+                saveLists();
+                initLists();
+                editWordInputs.innerHTML = "";
+                showNotification(`Liste "${listName}" supprimée`, "success");
+            }
+        });
+
+        // Boutons d'annulation
+        cancelAddBtn.addEventListener("click", () => {
+            setupContainer.classList.remove("hidden");
+            listManagerContainer.classList.add("hidden");
+        });
+
+        cancelEditBtn.addEventListener("click", () => {
+            setupContainer.classList.remove("hidden");
+            listManagerContainer.classList.add("hidden");
+        });
+
+        // =========================
+        // Démarrage du quiz
+        // =========================
+        startBtn.addEventListener("click", () => {
+            const selectedList = listSelect.value;
+            mode = modeSelect.value;
+            currentList = [...listes[selectedList]];
+            currentIndex = 0;
+            score = 0;
+
+            setupContainer.classList.add("hidden");
+            scoreContainer.classList.add("hidden");
+            quizContainer.classList.remove("hidden");
+
+            updateProgressBar();
+            showQuestion();
+        });
+
+        // =========================
+        // Mise à jour de la barre de progression
+        // =========================
+        function updateProgressBar() {
+            const progress = (currentIndex / currentList.length) * 100;
+            progressBar.style.width = progress + '%';
+        }
+
+        // =========================
+        // Affichage d'une question
+        // =========================
+        function showQuestion() {
+            if (currentIndex >= currentList.length) {
+                endQuiz();
+                return;
+            }
+
+            let item = currentList[currentIndex];
+            questionNumberEl.textContent = `Question ${currentIndex + 1}/${currentList.length}`;
+            questionEl.textContent = item.fr;
+
+            optionsEl.innerHTML = "";
+            answerInput.classList.add("hidden");
+            validateBtn.style.display = "none";
+
+            if (mode === "qcm") {
+                // QCM
+                let answers = [item.en];
+                while (answers.length < 4) {
+                    let randomItem = currentList[Math.floor(Math.random() * currentList.length)].en;
+                    if (!answers.includes(randomItem)) {
+                        answers.push(randomItem);
+                    }
+                }
+                answers.sort(() => Math.random() - 0.5);
+
+                answers.forEach(ans => {
+                    let btn = document.createElement("button");
+                    btn.textContent = ans;
+                    btn.onclick = () => {
+                        // Animation de feedback
+                        if (ans === item.en) {
+                            score++;
+                            btn.classList.add("correct-animation");
+                            btn.style.background = "linear-gradient(135deg, #84fab0 0%, #8fd3f4 100%)";
+                        } else {
+                            btn.style.background = "linear-gradient(135deg, #ff9a9e 0%, #fecfef 100%)";
+                        }
+                        
+                        // Désactiver tous les boutons
+                        Array.from(optionsEl.children).forEach(b => b.disabled = true);
+                        
+                        setTimeout(() => {
+                            currentIndex++;
+                            updateProgressBar();
+                            showQuestion();
+                        }, 1000);
+                    };
+                    optionsEl.appendChild(btn);
+                });
+
+            } else {
+                // Mode écriture
+                answerInput.value = "";
+                answerInput.classList.remove("hidden");
+                validateBtn.style.display = "block";
+
+                // Validation avec Enter
+                answerInput.onkeypress = (e) => {
+                    if (e.key === 'Enter') {
+                        validateAnswer();
+                    }
+                };
+
+                validateBtn.onclick = validateAnswer;
+            }
+        }
+
+        function validateAnswer() {
+            const userAnswer = answerInput.value.trim().toLowerCase();
+            const correctAnswer = currentList[currentIndex].en.toLowerCase();
+            
+            if (userAnswer === correctAnswer) {
+                score++;
+                answerInput.style.background = "linear-gradient(135deg, #84fab0 0%, #8fd3f4 100%)";
+            } else {
+                answerInput.style.background = "linear-gradient(135deg, #ff9a9e 0%, #fecfef 100%)";
+            }
+            
+            setTimeout(() => {
+                answerInput.style.background = "";
+                currentIndex++;
+                updateProgressBar();
+                showQuestion();
+            }, 1000);
+        }
+
+        // =========================
+        // Fin du quiz
+        // =========================
+        function endQuiz() {
+            quizContainer.classList.add("hidden");
+            scoreContainer.classList.remove("hidden");
+
+            const percentage = Math.round((score / currentList.length) * 100);
+            let emoji = "🎉";
+            let message = "Bravo !";
+            
+            if (percentage >= 90) {
+                emoji = "🏆";
+                message = "Excellent !";
+            } else if (percentage >= 70) {
+                emoji = "🌟";
+                message = "Très bien !";
+            } else if (percentage >= 50) {
+                emoji = "👍";
+                message = "Pas mal !";
+            } else {
+                emoji = "💪";
+                message = "Continue tes efforts !";
+            }
+
+            scoreEl.innerHTML = `${emoji} ${message}<br>Ton score : ${score}/${currentList.length} (${percentage}%)`;
+
+            lastScores.unshift(`${score}/${currentList.length}`);
+            if (lastScores.length > 6) lastScores.pop();
+            
+            try {
+                sessionStorage.setItem("englishScores", JSON.stringify(lastScores));
+            } catch (e) {
+                console.log("Impossible de sauvegarder les scores");
+            }
+
+            showLastScores();
+        }
+
+        // =========================
+        // Affichage des derniers scores
+        // =========================
+        function showLastScores() {
+            lastScoresEl.innerHTML = "";
+            lastScores.forEach(s => {
+                let li = document.createElement("li");
+                li.textContent = s;
+                lastScoresEl.appendChild(li);
+            });
+        }
+
+        // =========================
+        // Recommencer
+        // =========================
+        restartBtn.addEventListener("click", () => {
+            scoreContainer.classList.add("hidden");
+            setupContainer.classList.remove("hidden");
+            progressBar.style.width = "0%";
+        });
+
+        // Afficher les scores au chargement
+        showLastScores();
+    </script>
+</body>
+</html>
